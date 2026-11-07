@@ -16,3 +16,4 @@ class StyleRulesAgent:
        return self.rules.get(style_clean, {"genre": "فيلم درامي وثائقي", "duration": 5})
 
 
+
