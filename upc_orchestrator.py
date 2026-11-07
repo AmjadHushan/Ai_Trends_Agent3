@@ -1,114 +1,91 @@
-# upc_orchestrator.py
-import os
-import json
-import sqlite3
 import asyncio
-from telegram.ext import Application
-
-# استدعاء المايسترو كاتب القصة المستقل المعزول ستيج 2
-from ai_writer import AIStoryProductionCoordinator
+import sqlite3
+import gc
+import torch
+from ai_writer import AutonomousAIWriterAgent
+from progress_bar_agent import ProgressBarAgent
 
 class UPCOrchestratorPlatform:
-   def __init__(self, config_path="config.json", db_path="trends_stage_db.sqlite"):
-       self.config_path = config_path
-       self.db_stage1 = db_path  # الاتصال بقاعدة بيانات البوت الأصلي مباشرة
-       self.config = self.load_config()
-       self.writer_coordinator = AIStoryProductionCoordinator(db_stage1_path=db_path)
-       self.loop_delay = 2  # فحص القرص كل ثانيتين بصمت
+   def __init__(self, db1_path="trends_stage_db.sqlite"):
+       self.db1_path = db1_path
+       self.is_running = True
 
-   def load_config(self):
-       if os.path.exists(self.config_path):
-           with open(self.config_path, 'r', encoding='utf-8') as f:
-               return json.load(f)
-       return {}
-
-   def fetch_next_approved_ticket(self):
-       """الفحص الذكي المتوازي لجدول الكشط وجدول التوجيهات البشرية لقطف حالة APPROVED"""
-       conn = sqlite3.connect(self.db_stage1)
-       cursor = conn.cursor()
-       try:
-           # 1. أولاً: التحقق من وجود ترند تلقائي معتمد
-           cursor.execute(
-               "SELECT concept_id, trend_keyword, telegram_message_id FROM scraped_trends WHERE status = 'APPROVED' LIMIT 1"
-           )
-           row = cursor.fetchone()
-           if row:
-               return row, "trends"
-
-           # 2. ثانياً: التحقق من وجود توجيه بشري مباشر معتمد (حل المشكلة الحالية)
-           cursor.execute(
-               "SELECT command_id, command_text FROM human_commands WHERE status = 'APPROVED' LIMIT 1"
-           )
-           row_human = cursor.fetchone()
-           if row_human:
-               # توليد هيكل متوافق برمجياً ليمر بسلام لكاتب القصة
-               return (row_human[0], row_human[1], 0), "human"
-
-           return None
-       except sqlite3.OperationalError:
-           return None
-       finally:
-           conn.close()
-
-   def update_stage1_status(self, concept_id, table_type, new_status):
-       """تحديث قفل الحالة في الجدول الصحيح لمنع التكرار"""
-       conn = sqlite3.connect(self.db_stage1)
-       cursor = conn.cursor()
-       try:
-           if table_type == "trends":
-               cursor.execute("UPDATE scraped_trends SET status = ? WHERE concept_id = ?", (new_status, concept_id))
-           else:
-               cursor.execute("UPDATE human_commands SET status = ? WHERE command_id = ?", (new_status, concept_id))
-           conn.commit()
-       except sqlite3.OperationalError:
-           pass
-       finally:
-           conn.close()
-
-   async def start_autonomous_watcher_loop(self, bot_app: Application):
-       """حلقة المراقبة المركزية الصامتة المعزولة في الخلفية (Background Watcher Loop)"""
-       print("🚀 [طبقة الحوكمة UPC]: تم تدشين خادم المراقبة المتوازي (كشط + بشر) حياً...")
+   async def start_autonomous_watcher_loop(self, telegram_app):
+       """
+       حلقة المراقبة الصامتة في الخلفية (UPC):
+       تراقب الداتا بيز 1، وعند رصد فكرة معتمدة لحالة APPROVED،
+       تنشئ رسالة عداد جديدة وتمررها للكاتب لتبدأ المرحلة الثانية حياً أمامك.
+       """
+       print("📡 [UPC]: صمام المراقبة يراقب الداتا بيز 1 وبانتظار تفعيل المرحلة الثانية...")
       
-       chat_id = self.config.get("telegram_chat_id")
-       if not chat_id:
-           print("❌ خطأ حرج: لم يتم العثور على telegram_chat_id in config.json")
-           return
+       while self.is_running:
+           try:
+               # 1. فحص الداتا بيز 1 للبحث عن أي فكرة بحالة APPROVED
+               conn = sqlite3.connect(self.db1_path)
+               conn.row_factory = sqlite3.Row
+               cursor = conn.cursor()
+              
+               cursor.execute('''
+                   SELECT concept_id, trend_keyword, engineered_title, status
+                   FROM scraped_trends
+                   WHERE status = 'APPROVED'
+                   LIMIT 1
+               ''')
+               approved_row = cursor.fetchone()
+               conn.close()
 
-       while True:
-           ticket_data = self.fetch_next_approved_ticket()
-           if ticket_data:
-               ticket, table_type = ticket_data
-               concept_id, trend_kw, telegram_message_id = ticket
-              
-               print(f"🎯 [نبضة ملقوطة - جدول {table_type.upper()}]: جاري قفل المسار وبدء الفرم للـ ID: {concept_id}")
-              
-               # 1. قفل حالة التذكرة فوراً في جدولها الصحيح لمنع التداخل العشوائي
-               self.update_stage1_status(concept_id, table_type, "PROCESSING_STG2")
-              
-               # 2. إنشاء رسالة العداد الحركية الجديدة الحتمية في التليجرام لضمان التحديث المرئي أمام عينك
-               init_msg = await bot_app.bot.send_message(
-                   chat_id=str(chat_id),
-                   text=f"⏳ **[منظومة الفرم ستيج 2]: تم التقاط الأمر السيادي المستلم...**\n\n░░░░░░░░░░ [0%]"
-               )
-              
-               # 3. إطلاق كاتب القصة المستقل وإعطائه السيطرة الكاملة على رسالة الـ Progress
-               try:
-                   await self.writer_coordinator.run_stage2_production_pipeline(
-                       trend_id=concept_id,
-                       bot_context=bot_app,
-                       chat_id=chat_id,
-                       message_id=init_msg.message_id
+               if approved_row:
+                   concept_id = approved_row["concept_id"]
+                   keyword = approved_row["trend_keyword"]
+                   style = "تشويقي محايد"
+                  
+                   print(f"🔔 [إشارة UPC]: تم رصد فكرة معتمدة ({concept_id}). جاري إنشاء العداد وإيقاظ الكاتب...")
+
+                   # استدعاء المتغيرات السيادية المفتوحة مسبقاً في البوت
+                   from orchestrator_bot import ai_engine, CHANNEL_ID
+                  
+                   # 2. إنشاء رسالة عداد مخصصة للمرحلة الثانية في قناتك بالتليجرام
+                   target_chat = CHANNEL_ID if CHANNEL_ID else approved_row.get("telegram_message_id")
+                  
+                   init_msg = await telegram_app.bot.send_message(
+                       chat_id=str(target_chat),
+                       text="⏳ **[منظومة الفرم]: تم إيقاظ الكاتب. جاري بدء إنتاج الأجزاء بالتتابع...**"
                    )
                   
-                   # 4. وسم التذكرة بنجاح الإنتاج النصي الكامل في قاعدة البيانات ستيج 1
-                   self.update_stage1_status(concept_id, table_type, "STG2_COMPLETED")
-                   print(f"✅ [نجاح الحوكمة]: اكتمل طحن السيناريو للـ {concept_id} واستقر في ستيج 2.")
+                   # 3. تأسيس وكيل العداد للمسار الجديد
+                   from telegram.ext import CallbackContext
+                   context = CallbackContext(telegram_app)
+                   progress = ProgressBarAgent(context, init_msg.chat_id, init_msg.message_id)
 
-               except Exception as e:
-                   print(f"❌ فشل داخل خط الإنتاج النصي المجهري: {e}")
-                   self.update_stage1_status(concept_id, table_type, "STG2_FAILED")
+                   # 4. إيقاظ الكاتب وتمرير العداد له ليحدثه تلقائياً خطوة بخطوة
+                   writer_agent = AutonomousAIWriterAgent(ai_engine)
+                   asyncio.create_task(
+                       writer_agent.execute_autonomous_writing_cycle(concept_id, keyword, style, progress)
+                   )
 
-           await asyncio.sleep(self.loop_delay)
+                   # 5. تحديث حالة الفكرة في الداتا بيز 1 إلى 'PROCESSING_STG2' لحمايتها من التكرار
+                   conn = sqlite3.connect(self.db1_path)
+                   cursor = conn.cursor()
+                   cursor.execute("UPDATE scraped_trends SET status = 'PROCESSING_STG2' WHERE concept_id = ?", (concept_id,))
+                   conn.commit()
+                   conn.close()
 
+                   # 🧼 [تنظيف المعدات الحتمي للمرحلة الأولى]:
+                   # إبادة مخلفات الكشط وعمليات معالجة الـ النصوص العربية القديمة فوراً لتفريغ الـ VRAM للكاتب
+                   if torch.cuda.is_available():
+                       torch.cuda.empty_cache()
+                       torch.cuda.ipc_collect()
+                   gc.collect()
+                   print("🧼 [UPC Clean]: تم قفل دورة المرحلة الأولى وتطهير معدات الكشط بنجاح كامل.")
+
+           except Exception as e:
+               print(f"❌ [خطأ في مراقب UPC]: {str(e)}")
+
+           # فحص الداتا بيز كل 3 ثوانٍ صامتاً دون أي إجهاد للعتاد
+           await asyncio.sleep(3)
+
+   def stop_watcher(self):
+       self.is_running = False
+       print("❄ [UPC]: تم إغلاق صمام المراقبة بأمان.")
 
 
