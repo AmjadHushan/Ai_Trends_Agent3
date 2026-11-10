@@ -47,7 +47,7 @@ position: relative;
 
 .chat {
  background: #1e1e24;
- max-width: 35%;
+ width: 35%;
  height: 445px;
  position: absolute;
  bottom: 105px;
