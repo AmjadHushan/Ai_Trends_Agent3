@@ -1,40 +1,45 @@
 body{
-   margin-top: -10px;
+    margin-top: -10px;
+    background-color: rgb(0,90,60);
+
 }
 
 .head{
-   background-color: rgb(168, 45, 45);
-   width: 100%;
-   height: 50px;
-  
-   margin-bottom: 5px;
+    background-color: rgb(0,90,60);
+    width: 100%;
+    height: 50px;
+    
+    margin-bottom: 5px;
 
-   text-align: center;
-  
+    text-align: center;
+    color: #00ff66;
+    
 
-  
+    
 }
 
 .teile{
-   background-color: seagreen;
-   width: 100%;
-   height: 580px;
+    background-color:#1e1e24;
+;
+    width: 100%;
+    height: 580px;
 
 position: relative;
 
 }
 
-.seiten{background-color: brown;
-   width: 100%;
-   height: 25px;
-   position: absolute;
+.seiten{
+  background-color: rgb(20,60,40);
+  width: 100%;
+  height: 25px;
+  position: absolute;
 }
-.setting{background-color: rgb(122, 44, 99);
-   width: 50px;
-   height: 25px;
-   position: absolute;
-   right: 0px;
-   top: 0;
+.setting{background-color: #00ff66;
+    width: 50px;
+    height: 25px;
+    position: absolute;
+    right: 0px;
+    top: 0;
 }
 
 
@@ -46,14 +51,14 @@ position: relative;
 
 
 .chat {
- background: #1e1e24;
- width: 35%;
- height: 445px;
- position: absolute;
- bottom: 105px;
- display: flex;
- flex-direction: column;
- direction: rtl;
+  background: #1e1e24;
+  width: 35%;
+  height: 445px;
+  position: absolute;
+  bottom: 105px;
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
 }
 .chat-box { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 .msg { padding: 8px 12px; border-radius: 8px; max-width: 85%; font-size: 13px; color: #fff; }
@@ -73,45 +78,53 @@ position: relative;
 
 
 .table-container{
- max-width: 65%;
- max-height:445px;
- position: absolute;
- bottom: 105px;
- right: 0px;
-   overflow: auto;
+  max-width: 65%;
+  max-height:445px;
+  position: absolute;
+  bottom: 105px;
+  right: 0px;
+    overflow: auto;
 
 }
 .table {
- width: 1000px;
- height: 700px;
- table-layout: fixed;
- border-collapse: collapse;
- word-wrap: break-word;
- text-align: center;
+  width: 1000px;
+  height: 700px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  word-wrap: break-word;
+  text-align: center;
+  color: #fff;
 
+}
+td[contenteditable="true"]{
+  background-color: #2b2b36;
+}
+td:not([contenteditable="true"]){
+font-size: large;
+    color: #00ff66;
+border:1px solid #00ff66;
 }
 
 
 
 
 
-
-
-.buttons{background-color: rgb(165, 116, 42);
-   width: 100%;
-   height: 50px;
-   position: absolute;
-   bottom: 50px;
-   display: flex;
-   align-items: center;
+.buttons{
+    background-color: rgb(20,60,40);
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    align-items: center;
 
 }
 
-.prosses{background-color: rgb(155, 42, 165);
-   width: 100%;
-   height: 50px;
-   position: absolute;
-   bottom: 0px;
+.progress{background-color: rgb(155, 42, 165);
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom: 0px;
 
 }
 
@@ -128,81 +141,81 @@ position: relative;
 
 /* الحاوية الأساسية للمفتاح - قمنا بزيادة العرض ليتسع للنص بالداخل */
 .switch {
- position: relative;
- display: inline-block;
- width: 75px;
- height: 34px;
- vertical-align: middle; /* لجعله متناسقاً على نفس مستوى الأزرار بجانبه */
+  position: relative;
+  display: inline-block;
+  width: 75px;
+  height: 34px;
+  vertical-align: middle; /* لجعله متناسقاً على نفس مستوى الأزرار بجانبه */
 }
 
 /* إخفاء صندوق الاختيار الافتراضي للمتصفح */
 .switch input {
- opacity: 0;
- width: 0;
- height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 /* خلفية شريط التبديل الأساسية */
 .slider {
- position: absolute;
- cursor: pointer;
- top: 0;
- left: 0;
- right: 0;
- bottom: 0;
- background-color: #e0e0e0;
- border: 1px solid #ccc;
- transition: 0.3s ease;
- border-radius: 20px; /* زوايا دائرية ناعمة وأنيقة */
- box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2b2b36;
+  border: 1px solid #1e1e24;
+  transition: 0.3s ease;
+  border-radius: 20px; /* زوايا دائرية ناعمة وأنيقة */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* كتابة نص "Off" الافتراضي داخل الزر عند الإيقاف */
 .slider:after {
- content: "Off";
- position: absolute;
- color: #666;
- font-family: Arial, sans-serif;
- font-size: 12px;
- font-weight: bold;
- top: 50%;
- right: 12px;
- transform: translateY(-50%);
- transition: 0.3s ease;
+  content: "OFF";
+  position: absolute;
+  color: #00ff66;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
 }
 
 /* الدائرة المتحركة البيضاء (المقبض الداخلي) */
 .slider:before {
- position: absolute;
- content: "";
- height: 26px;
- width: 26px;
- left: 3px;
- bottom: 3px;
- background-color: white;
- border-radius: 50%;
- transition: 0.3s ease;
- box-shadow: 0 2px 4px rgba(0,0,0,0.2);
- z-index: 2; /* لضمان ظهور الدائرة فوق النص */
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 3px;
+  bottom: 3px;
+  background-color:#00ff66 ;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 4px rgba(85, 210, 13, 0.2);
+  z-index: 2; /* لضمان ظهور الدائرة فوق النص */
 }
 
 /* تأثيرات التفعيل عند الضغط على الزر (Checked) */
 .switch input:checked + .slider {
- background-color: #0084ff; /* لون أزرق حيوي ونظيف */
- border-color: #0070d2;
+  background-color: #1e1e24; /* لون أزرق حيوي ونظيف */
+  border-color: #00ff66;
 }
 
 /* تحريك الدائرة البيضاء بسلاسة إلى اليمين عند التفعيل */
 .switch input:checked + .slider:before {
- transform: translateX(41px);
+  transform: translateX(41px);
 }
 
 /* تغيير النص إلى "On" ونقله إلى اليسار عند التفعيل */
 .switch input:checked + .slider:after {
- content: "On";
- color: #fff;
- right: auto;
- left: 15px;
+  content: "ON";
+  color: #00ff66;
+  right: auto;
+  left: 15px;
 }
 
 
@@ -210,230 +223,190 @@ position: relative;
 
 /* الحاوية الأساسية لمفتاح التكرار */
 .loop {
- position: relative;
- display: inline-block;
- width: 95px; /* عرض أكبر لتوفير مساحة كافية للحركة والقائمة */
- height: 38px;
- vertical-align: middle;
- margin-left: 10px;
+  position: relative;
+  display: inline-block;
+  width: 95px; /* عرض أكبر لتوفير مساحة كافية للحركة والقائمة */
+  height: 38px;
+  vertical-align: middle;
+  margin-left: 10px;
 }
 /* إخفاء التشيك بوكس الافتراضي */
 .loop input {
- opacity: 0;
- width: 0;
- height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 /* خلفية شريط التبديل (عندما يكون مطفأً) */
 .loop .slider {
- position: absolute;
- cursor: pointer;
- top: 0;
- left: 0;
- right: 0;
- bottom: 0;
- background-color: #e0e0e0;
- border: 1px solid #ccc;
- border-radius: 20px;
- transition: 0.3s ease;
- box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2b2b36;
+  border: 1px solid #1e1e24;
+  border-radius: 20px;
+  transition: 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 /* كتابة كلمة Off على الخلفية عندما يكون التكرار معطلاً */
 .loop .slider:after {
- content: "Off";
- position: absolute;
- color: #666;
- font-family: Arial, sans-serif;
- font-size: 12px;
- font-weight: bold;
- top: 50%;
- right: 15px;
- transform: translateY(-50%);
- transition: 0.3s ease;
+  content: "OFF";
+  position: absolute;
+  color: #00ff66;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
 }
 /* تصميم القائمة المنسدلة لتظهر كأنها هي الدائرة البيضاء المتحركة */
 .loop-select {
- appearance: none;
- -webkit-appearance: none;
- -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  
   position: absolute;
- height: 30px;
- width: 45px; /* شكل بيضاوي أنيق ليتسع للرقم وحرف h */
- left: 3px;
- bottom: 3px;
- background-color: white;
- border: 1px solid #b5b5b5;
- border-radius: 15px;
+  height: 30px;
+  width: 45px; /* شكل بيضاوي أنيق ليتسع للرقم وحرف h */
+  left: 3px;
+  bottom: 3px;
+  background-color: #00ff66;
+  border: 1px solid #1e1e24;
+  border-radius: 15px;
+  
   font-family: Arial, sans-serif;
- font-size: 11px;
- font-weight: bold;
- color: #333;
- text-align: center;
- cursor: pointer;
- outline: none;
- box-shadow: 0 2px 4px rgba(0,0,0,0.2);
- transition: 0.3s ease;
- z-index: 2;
- padding: 0;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1e1e24;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
+  z-index: 2;
+  padding: 0;
 }
 /* إخفاء الأسهم الافتراضية للمتصفح بالكامل */
 .loop-select::-ms-expand {
- display: none;
+  display: none;
 }
 /* عند تشغيل الزر (Checked): تتغير الخلفية إلى الأخضر وتختفي كلمة Off */
 .loop input:checked + .slider {
- background-color: #28a745;
- border-color: #1e7e34;
+  background-color: #1e1e24;
+  border-color: #00ff66;
 }
 .loop input:checked + .slider:after {
- content: ""; /* إخفاء كلمة Off عند التشغيل */
+  content: ""; /* إخفاء كلمة Off عند التشغيل */
 }
 /* تحريك الدائرة البيضاء (القائمة المنسدلة) إلى اليمين عند التشغيل */
 .loop input:checked + .slider .loop-select {
- transform: translateX(42px);
+  transform: translateX(42px);
 }
 /* تحسين خيارات القائمة المنسدلة عند فتحها */
 .loop-select option {
- background-color: white;
- color: #333;
+  background-color: #1e1e24;
+  color: #00ff66;
 }
 
 
 /* زر التنظيف المتناسق وباسم الكلاس clean */
 .clean {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- gap: 8px; /* مسافة بين الأيقونة والنص */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* مسافة بين الأيقونة والنص */
+  
   height: 34px; /* نفس ارتفاع أزرار التشغيل والتكرار تماماً */
- padding: 0 16px;
- background-color: #dc3545; /* لون أحمر للتعبير عن الحذف والتنظيف */
- color: white;
-  border: 1px solid #dc3545;
- border-radius: 20px; /* نفس الانحناء الدائري المتناسق */
+  padding: 0 16px;
+  background-color: #1e1e24; /* لون أحمر للتعبير عن الحذف والتنظيف */
+  color: #00ff66;
+  
+  border: 1px solid #00ff66;
+  border-radius: 20px; /* نفس الانحناء الدائري المتناسق */
+  
   font-family: Arial, sans-serif;
- font-size: 13px;
- font-weight: bold;
- cursor: pointer;
- vertical-align: middle;
- outline: none;
- box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
- transition: all 0.2s ease;
- margin-left: 10px; /* مسافة تفصله عن الزر الذي قبله */
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  vertical-align: middle;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+  transition: all 0.2s ease;
+  margin-left: 10px; /* مسافة تفصله عن الزر الذي قبله */
 }
 /* حجم الأيقونة (سلة المهملات) بالداخل */
 .clean .clean-icon {
- width: 16px;
- height: 16px;
- transition: transform 0.2s ease;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
 }
 /* تأثيرات تمرير الفأرة (Hover) */
 .clean:hover {
- background-color: #c82333;
- border-color: #bd2130;
- box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+  background-color: #c82333;
+  border-color: #bd2130;
+  box-shadow: 0 8px 2px rgba(220, 53, 69, 0.3);
 }
 /* تأثير الاهتزاز الخفيف للأيقونة عند تمرير الماوس */
 .clean:hover .clean-icon {
- transform: scale(1.1) rotate(-5deg);
+  transform: scale(1.1) rotate(-5deg);
 }
 /* تأثير الضغط الفعلي (Click) */
 .clean:active {
- transform: scale(0.96); /* ينضغط للداخل قليلاً ليعطي إيحاء حقيقي بالنقرة */
- box-shadow: 0 1px 2px rgba(220, 53, 69, 0.2);
+  transform: scale(0.96); /* ينضغط للداخل قليلاً ليعطي إيحاء حقيقي بالنقرة */
+  box-shadow: 0 1px 2px rgba(220, 53, 69, 0.2);
 }
-
-
-/* زر الحفظ المتناسق وباسم الكلاس save */
-.save {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- gap: 8px; /* مسافة بين الأيقونة والنص */
-  height: 34px; /* نفس ارتفاع أزرار التشغيل، التكرار، والتنظيف تماماً */
- padding: 0 16px;
- background-color: #0056b3; /* لون أزرق غامق واحترافي يعبر عن الحفظ */
- color: white;
-  border: 1px solid #0056b3;
- border-radius: 20px; /* نفس الانحناء الدائري المتناسق للأزرار */
-  font-family: Arial, sans-serif;
- font-size: 13px;
- font-weight: bold;
- cursor: pointer;
- vertical-align: middle;
- outline: none;
- box-shadow: 0 2px 4px rgba(0, 86, 179, 0.2);
- transition: all 0.2s ease;
- margin-left: 10px; /* مسافة تفصله عن الزر الذي قبله */
-}
-/* حجم الأيقونة (القرص المرن) بالداخل */
-.save .save-icon {
- width: 16px;
- height: 16px;
- transition: transform 0.2s ease;
-}
-/* تأثيرات تمرير الفأرة (Hover) */
-.save:hover {
- background-color: #004085;
- border-color: #003875;
- box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
-}
-/* تأثير نبض خفيف للأيقونة عند تمرير الماوس */
-.save:hover .save-icon {
- transform: scale(1.1);
-}
-/* تأثير الضغط الفعلي (Click) */
-.save:active {
- transform: scale(0.96); /* ينضغط للداخل قليلاً ليعطي إيحاء حقيقي بالنقرة */
- box-shadow: 0 1px 2px rgba(0, 86, 179, 0.2);
-}
-
 
 
 /* Start button style under the class .start */
 .start {
- display: inline-flex;
- align-items: center;
- justify-content: center;
- gap: 8px; /* Space between icon and text */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+  
   height: 34px; /* Perfectly matches your existing buttons */
- padding: 0 18px;
- background-color: #28a745; /* Vibrant process-start green */
- color: white;
-  border: 1px solid #28a745;
- border-radius: 20px; /* Matching rounded corners */
+  padding: 0 18px;
+  background-color: #1e1e24; /* Vibrant process-start green */
+  color: #00ff66;
+  
+  border: 1px solid #00ff66;
+  border-radius: 20px; /* Matching rounded corners */
+  
   font-family: Arial, sans-serif;
- font-size: 13px;
- font-weight: bold;
- cursor: pointer;
- vertical-align: middle;
- outline: none;
- box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
- transition: all 0.2s ease;
- margin-left: 10px; /* Layout spacing spacing */
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  vertical-align: middle;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+  transition: all 0.2s ease;
+  margin-left: 10px; /* Layout spacing spacing */
 }
 /* Play/Start icon size */
 .start .start-icon {
- width: 14px;
- height: 14px;
- transition: transform 0.2s ease;
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
 }
 /* Hover effects */
 .start:hover {
- background-color: #218838;
- border-color: #1e7e34;
- box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+  background-color: #218838;
+  border-color: #1e7e34;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
 /* Slightly scale up the icon on hover */
 .start:hover .start-icon {
- transform: scale(1.15);
+  transform: scale(1.15);
 }
 /* Click/Active downpress effect */
 .start:active {
- transform: scale(0.96);
- box-shadow: 0 1px 2px rgba(40, 167, 69, 0.2);
+  transform: scale(0.96);
+  box-shadow: 0 1px 2px rgba(40, 167, 69, 0.2);
 }
-
-
 
 
 
